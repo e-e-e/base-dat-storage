@@ -1,5 +1,3 @@
-var ras3 = require('random-access-s3')
-var AWS = require('aws-sdk')
 var secretStorage = require('./secret-store')
 var multi = require('multi-random-access')
 var Stat = require('hyperdrive/lib/messages').Stat
@@ -9,9 +7,9 @@ var path = require('path')
 module.exports = function (dir, randomAccessInterface) {
   return {
     metadata: function (name, opts) {
-      // console.log('accessing metadata', name)
-      if (name === 'secret_key')
+      if (name === 'secret_key') {
         return secretStorage(null, randomAccessInterface)(path.join(dir, '.dat/metadata.ogd'), { key: opts.key, discoveryKey: opts.discoveryKey })
+      }
       return randomAccessInterface(path.join(dir, '.dat/metadata.' + name))
     },
     content: function (name, opts, archive) {
